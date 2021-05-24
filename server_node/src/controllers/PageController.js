@@ -52,7 +52,13 @@ async function mediaPath() {
   var drives = await getDrives()
   console.log(drives)
   if (drives.length > 1) {
-    path =  drives[1].mountpoints[0].path
+    for (var i = 0; i < drives.length; i++) {
+      if ((drives[i].isUSB) & ('path' in drives[i].mountpoints[0])) {
+        path = drives[i].mountpoints[0].path
+        console.log("found external...", path)
+        return path
+      }
+    }
   }
   console.log("Setting path to:", path)
   return path
