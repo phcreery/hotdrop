@@ -1,41 +1,42 @@
 <template>
   <div id="app">
-    <a-layout id="components-layout-demo-fixed">
-      <Header/>
-      <a-layout-content :style="{ padding: '0 50px', marginTop: '64px', minHeight: 'calc(100vh - 64px - 64px - 5px)' }">
-        <Breadcrumb/>
-        <div :style="{ background: '#fff', padding: '24px', minHeight: '100%' }">
-          <router-view/>
+    <el-container id="components-layout-demo-fixed">
+      <Header />
+      <el-main
+        :style="{
+          padding: '0 50px',
+          marginTop: '64px',
+          minHeight: 'calc(100vh - 64px - 64px - 5px)',
+        }"
+      >
+        <Breadcrumb />
+        <div
+          :style="{ background: '#fff', padding: '24px', minHeight: '100%' }"
+        >
+          <router-view />
         </div>
-      </a-layout-content>
-      <a-layout-footer :style="{ textAlign: 'center' }">
+      </el-main>
+      <el-footer :style="{ textAlign: 'center' }">
         Ant Design ©2018 Created by Ant UED
-      </a-layout-footer>
-    </a-layout>
+      </el-footer>
+    </el-container>
   </div>
 </template>
 
 <script>
 // import Gallery from './components/Gallery.vue'
-import Breadcrumb from './components/Shared/Breadcrumb.vue'
-import Header from './components/Shared/Header.vue'
-
+import Breadcrumb from "./components/Shared/Breadcrumb.vue";
+import Header from "./components/Shared/Header.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     // Gallery,
     Breadcrumb,
-    Header
+    Header,
   },
-  mounted(){
-    this.$message.config({
-      top: '80px',
-      duration: 2,
-      maxCount: 2,
-    });
-  }
-}
+  mounted() {},
+};
 </script>
 
 <style>

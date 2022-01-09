@@ -1,0 +1,78 @@
+{
+  "_from": "vue-picture-swipe",
+  "_id": "vue-picture-swipe@2.1.0",
+  "_inBundle": false,
+  "_integrity": "sha512-LsEeIfBmaByQBIRKbr95a28m0FjcrQZMka2cgCtfPT637JfVYu53EvhL+H5zxh8n8ZWYI2rWJZiXVE0d+7J/9A==",
+  "_location": "/vue-picture-swipe",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "vue-picture-swipe",
+    "name": "vue-picture-swipe",
+    "escapedName": "vue-picture-swipe",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/vue-picture-swipe/-/vue-picture-swipe-2.1.0.tgz",
+  "_shasum": "5147d744e28a6a704a8e6df35d0c4578f3bf9089",
+  "_spec": "vue-picture-swipe",
+  "_where": "C:\\Users\\phcre\\Documents\\Arduino\\MediaBrowser\\MyMediaBrowser\\client",
+  "author": {
+    "name": "rap2hpoutre"
+  },
+  "bugs": {
+    "url": "https://github.com/rap2hpoutre/vue-picture-swipe/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "photoswipe": "^4.1.2",
+    "vue": "^2.5.16"
+  },
+  "deprecated": false,
+  "description": "A Vue integration PhotoSwipe image plugin",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.6.1",
+    "cross-env": "^5.1.4",
+    "css-loader": "^0.28.11",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.11.0",
+    "file-loader": "^1.1.11",
+    "node-sass": "^4.9.0",
+    "sass-loader": "^6.0.7",
+    "style-loader": "^0.21.0",
+    "vue-loader": "^14.2.2",
+    "vue-template-compiler": "^2.5.16",
+    "webpack": "^4.27.1",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.3"
+  },
+  "homepage": "https://github.com/rap2hpoutre/vue-picture-swipe#readme",
+  "keywords": [
+    "vue",
+    "photoswipe",
+    "image",
+    "gallery",
+    "preview",
+    "vuejs"
+  ],
+  "license": "MIT",
+  "main": "src/main.js",
+  "name": "vue-picture-swipe",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rap2hpoutre/vue-picture-swipe.git"
+  },
+  "scripts": {
+    "build": "webpack -p",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "2.1.0"
+}

@@ -1,59 +1,69 @@
 <template>
-  <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%', textAlign: 'center' }">
+  <el-header
+    :style="{
+      position: 'fixed',
+      zIndex: 1,
+      width: '100%',
+      textAlign: 'center',
+    }"
+  >
     <!-- <div class="logo" /> -->
-    <a-menu
-      theme="dark"
+    <el-menu
       mode="horizontal"
-      :selectedKeys="[currentRouteName]"
+      :default-active="1"
       :style="{ lineHeight: '64px', marginRight: '0px' }"
     >
-      <a-menu-item v-for="(page) in pages" v-bind:id="page.to" v-bind:key="page.to" @click="goto(page.to)">
-        <a-icon :type="page.icon" :style="{ marginRight: '0px' }" />
-      </a-menu-item>
-
-    </a-menu>
-  </a-layout-header>
+      <el-menu-item id="Photos" index="1" @click="goto('Photos')">
+        <!-- <el-icon><Camera /></el-icon> -->
+        <el-icon><Picture /></el-icon>
+        Pictures
+      </el-menu-item>
+      <el-menu-item id="Files" index="2" @click="goto('Files')">
+        <el-icon><folder-opened /></el-icon>
+        Files
+      </el-menu-item>
+      <el-menu-item id="Upload" index="3" @click="goto('Upload')">
+        <el-icon><upload-filled /></el-icon>
+        Upload
+      </el-menu-item>
+      <el-menu-item id="Photos" index="4" @click="goto('Settings')">
+        <el-icon><Tools /></el-icon>
+        Settings
+      </el-menu-item>
+    </el-menu>
+  </el-header>
 </template>
 
 <script>
+import {
+  Camera,
+  Picture,
+  Tools,
+  UploadFilled,
+  FolderOpened,
+} from "@element-plus/icons-vue";
+
 export default {
+  components: {
+    Camera,
+    Picture,
+    Tools,
+    UploadFilled,
+    FolderOpened,
+  },
   data() {
-    return {
-      pages: [
-        {
-          name: "Pictures",
-          icon: "camera",
-          to: "Photos",
-        },
-        {
-          name: "Files",
-          icon: "inbox",
-          to: "Files",
-        },
-        {
-          name: "Upload",
-          icon: "upload",
-          to: "Upload",
-        },
-        {
-          name: "Settings",
-          icon: "setting",
-          to: "Settings",
-        },
-      ]
-    }
+    return {};
   },
-  created () {
-  },
+  created() {},
   methods: {
-    async goto (dest) {
-      this.$router.push(dest)
+    async goto(dest) {
+      this.$router.push(dest);
     },
   },
   computed: {
     currentRouteName() {
       return this.$route.name;
-    }
-  }
-}
+    },
+  },
+};
 </script>

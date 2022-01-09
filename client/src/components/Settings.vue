@@ -1,66 +1,61 @@
 <template>
   <div>
-    <h1>Settings</h1><br/>
-    <!-- {{this.items}} -->
-    <a-row>
-      <a-col :span="24">
-        <a-tooltip>
-          <template slot="title">
-            {{this.items.dir.files}}
-          </template>
-        Files Directory: {{this.items.dir.files  | truncate(20, '...') }}<br/>
-        </a-tooltip>
-        Free Space: {{this.items.freespace | BtoGB}} GB (out of {{this.items.disksize | BtoGB}} GB)<br/>
-        Supported Images: {{this.items.dir.supportedPhotoFormats}}<br/>
-        Battery Percent: {{this.items.battery}}<br/>
-      </a-col>
-    </a-row>
-
+    <h1>Settings</h1>
+    <br />
+    <el-row>
+      <el-col :span="24">
+        <el-tooltip :content="this.items.dir.files">
+          Files Directory: {{ truncate(this.items.dir.files, 20, "...") }}
+        </el-tooltip>
+        <br />
+        Free Space: {{ BtoGB(this.items.freespace) }} GB (out of
+        {{ BtoGB(this.items.disksize) }} GB)<br />
+        Supported Images: {{ this.items.dir.supportedPhotoFormats }}<br />
+        Battery Percent: {{ this.items.battery }}<br />
+      </el-col>
+    </el-row>
   </div>
-</template>  
+</template>
 
 <script>
-import api from '../api.js'
+import api from "../api.js";
 export default {
-  components: {
-  },
-  data () {
+  components: {},
+  data() {
     return {
-      items: {dir:{files:null}}
-    }
+      items: { dir: { files: null } },
+    };
   },
   mounted() {
     this.$nextTick(function () {
       // Code that will run only after the
       // entire view has been rendered
-      this.buildlist()
-    })
+      this.buildlist();
+    });
   },
   methods: {
-    buildlist () {
+    buildlist() {
       api.getConfig().then((res) => {
-        if (res.status === 200){
-          console.log('Fetched File list:', res)
-          this.items = res.data // list of filenames
+        if (res.status === 200) {
+          console.log("Fetched File list:", res);
+          this.items = res.data; // list of filenames
         }
-      })
-      console.log(this.items)
+      });
+      console.log(this.items);
     },
-  },
-  filters: {
-    BtoGB(value){
-      return Math.round((value/1073741824) * 100)/100
-    },
-    truncate: function (text, length, suffix) {
+    truncate(text, length, suffix) {
+      if (!text) return;
       if (text.length > length) {
         return text.substring(0, length) + suffix;
       } else {
         return text;
       }
     },
-  }
-}  
+    BtoGB(value) {
+      return Math.round((value / 1073741824) * 100) / 100;
+    },
+  },
+};
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

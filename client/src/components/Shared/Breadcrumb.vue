@@ -1,18 +1,18 @@
 <template>
-  <a-breadcrumb :style="{ margin: '40px 0' }">
+  <el-breadcrumb>
     <!-- <a-breadcrumb-item>{{currentRouteName}}</a-breadcrumb-item> -->
-  </a-breadcrumb>
+  </el-breadcrumb>
 </template>
 
 <script>
 export default {
   data() {
-    return {}
+    return {};
   },
   computed: {
     currentRouteName() {
       return this.$route.name;
-    }
-  }
-}
+    },
+  },
+};
 </script>

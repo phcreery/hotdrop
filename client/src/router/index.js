@@ -1,38 +1,40 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import { createWebHistory, createRouter } from "vue-router";
+import Gallery from "/src/components/Gallery.vue";
+import Files from "/src/components/Files.vue";
+import Upload from "/src/components/Upload.vue";
+import Settings from "/src/components/Settings.vue";
 
-Vue.use(Router)
+const routes = [
+  {
+    path: "/",
+    name: "landing-page",
+    component: Gallery,
+  },
+  {
+    path: "/photos",
+    name: "Photos",
+    component: Gallery,
+  },
+  {
+    path: "/files",
+    name: "Files",
+    component: Files,
+  },
+  {
+    path: "/upload",
+    name: "Upload",
+    component: Upload,
+  },
+  {
+    path: "/settings",
+    name: "Settings",
+    component: Settings,
+  },
+];
 
-export default new Router({
-  routes: [
-    {
-      path: '/',
-      name: 'landing-page',
-      component: require('@/components/Gallery').default
-    },
-    {
-      path: '/photos',
-      name: 'Photos',
-      component: require('@/components/Gallery').default
-    },
-    {
-      path: '/files',
-      name: 'Files',
-      component: require('@/components/Files').default
-    },
-    {
-      path: '/upload',
-      name: 'Upload',
-      component: require('@/components/Upload').default
-    },
-    {
-      path: '/settings',
-      name: 'Settings',
-      component: require('@/components/Settings').default
-    },
-    {
-      path: '*',
-      redirect: '/'
-    }
-  ]
-})
+const router = createRouter({
+  history: createWebHistory(),
+  routes,
+});
+
+export default router;

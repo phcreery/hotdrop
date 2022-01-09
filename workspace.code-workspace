@@ -1,0 +1,19 @@
+{
+  "folders": [
+	{
+		"name": "server_esp",
+		"path": "server_esp"
+	},
+	{
+		"path": "."
+	}
+],
+  "settings": {
+    "files.associations": {
+      "sstream": "cpp"
+    },
+    "clang-format.fallbackStyle": "Google",
+    "editor.formatOnSave": true,
+    "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: Google, IndentWidth: 4, SortIncludes: false }"
+  }
+}

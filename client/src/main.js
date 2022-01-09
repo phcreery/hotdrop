@@ -1,19 +1,13 @@
-import Vue from 'vue'
-import App from './App.vue'
+import { createApp } from "vue";
+import App from "./App.vue";
 
-import Antd from 'ant-design-vue';
-import 'ant-design-vue/dist/antd.css';
+import ElementPlus from "element-plus";
+import "element-plus/dist/index.css";
 
-import router from './router'
+import router from "./router";
 
-Vue.use(Antd);
+const app = createApp(App);
 
-Vue.config.productionTip = false
-
-
-
-new Vue({
-  render: h => h(App),
-  router: router,
-  template: '<App/>'
-}).$mount('#app')
+app.use(ElementPlus);
+app.use(router);
+app.mount("#app");

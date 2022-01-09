@@ -1,51 +1,59 @@
 <template>
   <div :style="{ textAlign: 'center' }">
-    <a-upload-dragger
-      name="file"
-      :multiple="true"
-      :file-list="fileList" :remove="handleRemove" :before-upload="beforeUpload"
+    <el-upload
+      :action="none"
+      drag
+      multiple
+      :auto-upload="false"
+      :file-list="fileList"
+      :before-remove="handleRemove"
+      :on-change="
+        (file, fileList) => {
+          log(['change', file, fileList]);
+        }
+      "
+      :before-upload="beforeUpload"
     >
-      <p class="ant-upload-drag-icon">
-        <a-icon type="inbox" />
-      </p>
-      <p class="ant-upload-text">
-        Click or drag file to this area to upload
-      </p>
-      <p class="ant-upload-hint">
-        Support for a single or bulk upload. Strictly prohibit from uploading company data or other
-        band files
-      </p>
-    </a-upload-dragger>
-    <a-button
+      <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+      <div class="el-upload__text">
+        Drop file here or <em>click to upload</em>
+      </div>
+      <template #tip>
+        <div class="el-upload__tip">
+          jpg/png files with a size less than 500kb
+        </div>
+      </template>
+    </el-upload>
+    <el-button
       type="primary"
       :disabled="fileList.length === 0"
       :loading="uploading"
       style="margin-top: 16px"
       @click="handleUpload"
     >
-      {{ uploading ? 'Uploading' : 'Start Upload' }}
-    </a-button>
+      {{ uploading ? "Uploading" : "Start Upload" }}
+    </el-button>
   </div>
-</template>  
+</template>
 
 <script>
-import api from '../api.js'
+import { UploadFilled } from "@element-plus/icons-vue";
+import api from "../api.js";
 export default {
-  components: {
-  },
-  data () {
+  components: { UploadFilled },
+  data() {
     return {
       fileList: [],
-      uploadURL: '',
+      uploadURL: "",
       uploading: false,
-    }
+    };
   },
   mounted() {
     this.$nextTick(function () {
       // Code that will run only after the
       // entire view has been rendered
-      this.uploadURL = api.getUploadURL()
-    })
+      this.uploadURL = api.getUploadURL();
+    });
   },
   methods: {
     handleRemove(file) {
@@ -58,39 +66,41 @@ export default {
       this.fileList = [...this.fileList, file];
       return false;
     },
-     handleChange(info) {
+    handleChange(info) {
       const status = info.file.status;
-      if (status !== 'uploading') {
+      if (status !== "uploading") {
         console.log(info.file, info.fileList);
       }
-      if (status === 'done') {
+      if (status === "done") {
         this.$message.success(`${info.file.name} file uploaded successfully.`);
-      } else if (status === 'error') {
+      } else if (status === "error") {
         this.$message.error(`${info.file.name} file upload failed.`);
       }
     },
     handleUpload() {
       // upload file
       this.uploading = true;
-      const formData = new FormData()
+      const formData = new FormData();
       for (let file of this.fileList) {
-          formData.append('files', file, file.name)
-        }
-      api.UploadFileForm(formData).then((res)=>{
-        console.log(res)
-        if (res.status == 200){
+        formData.append("files", file, file.name);
+      }
+      api.UploadFileForm(formData).then((res) => {
+        console.log(res);
+        if (res.status == 200) {
           this.uploading = false;
-          this.$message.success('Uploaded Successfully.');
-          this.fileList = []
+          this.$message.success("Uploaded Successfully.");
+          this.fileList = [];
         } else {
           this.uploading = false;
-          this.$message.error('Upload Failed.');
+          this.$message.error("Upload Failed.");
         }
-      })
-    }  
-  }
-}  
+      });
+    },
+    log(data) {
+      console.log(data);
+    },
+  },
+};
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
