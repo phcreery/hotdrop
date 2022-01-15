@@ -27,6 +27,9 @@ export default defineConfig({
       'ant-design-vue/es/popconfirm/style/css',
       'ant-design-vue/es/button/style/css',
       'ant-design-vue/es/upload/style/css',
+      'ant-design-vue/es/row/style/css',
+      'ant-design-vue/es/col/style/css',
+      'ant-design-vue/es/tooltip/style/css',
     ],
   },
   define: {

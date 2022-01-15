@@ -1,31 +1,25 @@
-const PageController = require('./controllers/PageController')
+const FileController = require('./controllers/FileController')
 
 module.exports = (app) => {
-  PageController.updateStorage()
-
   app.get('/test', (req, res) => {
     res.send('Hello World')
   })
 
   // ############  PAGES  ############
 
-  app.get('/photolist/', PageController.getPhotoList) // () => return images: names, types, ...
+  app.get('/photolist/', FileController.getPhotoList) // () => return images: names, types, ...
 
-  app.get('/photolistsimple/', PageController.getPhotoListDumb) // () => return image filenames
+  app.use('/photos/', FileController.staticPhoto)
 
-  app.use('/photos/', PageController.staticPhoto)
+  app.get('/filelist/', FileController.getFileList) // () => return pages: names, types, ...
 
-  app.get('/filelistsimple/', PageController.getFileListDumb) // () => return pages: names, types, ...
+  app.use('/files/', FileController.staticFile)
 
-  app.get('/filelist/', PageController.getFileList) // () => return pages: names, types, ...
+  app.post('/upload/', FileController.uploadFile)
 
-  app.use('/files/', PageController.staticFile)
+  app.delete('/delete/', FileController.deleteFile)
 
-  app.post('/upload/', PageController.uploadFile)
-
-  app.delete('/delete/', PageController.deleteFile)
-
-  app.get('/config/', PageController.getConfig)
+  app.get('/config/', FileController.getConfig)
 
   // ############  MISC  ############
 

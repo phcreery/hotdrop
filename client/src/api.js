@@ -9,10 +9,10 @@ export default {
   getPhotoList: () =>
     instance({
       method: 'GET',
-      url: '/photolistsimple/',
+      url: '/photolist/',
     }),
   getPhotoBaseUrl: () => {
-    return instance.defaults.baseURL + "/photos/"
+    return instance.defaults.baseURL + '/photos/'
   },
 
   getFileList: () =>
@@ -20,28 +20,24 @@ export default {
       method: 'GET',
       url: '/filelist/',
     }),
-  getFileListSimple: () =>
-    instance({
-      method: 'GET',
-      url: '/filelistsimple/',
-    }),
   getFileBaseUrl: () => {
-    return instance.defaults.baseURL + "/files/"
+    return instance.defaults.baseURL + '/files/'
   },
 
   getUploadURL: () => {
-    return instance.defaults.baseURL + "/upload/"
+    return instance.defaults.baseURL + '/upload/'
   },
   UploadFileForm: (filesAsFormData) =>
-    instance.post('upload/', filesAsFormData, { headers: { 'Content-Type': 'multipart/form-data' } }),
-  
-  deleteFile: (file) =>
-    instance.delete('delete/', { data: { file: file } }),
-  
+    instance.post('upload/', filesAsFormData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    }),
+
+  deleteFile: (file) => instance.delete('delete/', { data: { file: file } }),
+
   downloadFile: (file) =>
     instance({
       method: 'GET',
-      url: '/files' + file.replace("%20", " "),
+      url: '/files' + file.replace('%20', ' '),
       responseType: 'blob',
     }),
 
