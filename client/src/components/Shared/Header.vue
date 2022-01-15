@@ -7,14 +7,12 @@
       textAlign: 'center',
     }"
   >
-    <!-- <div class="logo" /> -->
     <el-menu
       mode="horizontal"
-      :default-active="1"
+      default-active="1"
       :style="{ lineHeight: '64px', marginRight: '0px' }"
     >
       <el-menu-item id="Photos" index="1" @click="goto('Photos')">
-        <!-- <el-icon><Camera /></el-icon> -->
         <el-icon><Picture /></el-icon>
         Pictures
       </el-menu-item>
@@ -43,6 +41,10 @@ import {
   FolderOpened,
 } from "@element-plus/icons-vue";
 
+import { ref, onMounted, onBeforeMount, onBeforeUnmount, computed } from "vue";
+import router from "../../router";
+import { useRoute } from "vue-router";
+
 export default {
   components: {
     Camera,
@@ -51,19 +53,21 @@ export default {
     UploadFilled,
     FolderOpened,
   },
-  data() {
-    return {};
-  },
-  created() {},
-  methods: {
-    async goto(dest) {
-      this.$router.push(dest);
-    },
-  },
-  computed: {
-    currentRouteName() {
-      return this.$route.name;
-    },
+  setup() {
+    let route = useRoute();
+
+    function goto(dest) {
+      router.push(dest);
+    }
+
+    const currentRouteName = computed(() => route.path);
+
+    return { goto, currentRouteName };
   },
 };
 </script>
+<style scoped>
+.el-header {
+  padding: 0;
+}
+</style>

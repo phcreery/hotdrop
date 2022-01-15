@@ -1,6 +1,7 @@
 <template>
   <div>
     {{ items }}
+    <el-button>Default</el-button>
     <div v-if="ismobile">
       <div :style="{ textAlign: 'center' }">
         <!-- Files <br/> -->
@@ -66,69 +67,51 @@
 </template>
 
 <script>
+import { ref, onMounted, onBeforeMount, onBeforeUnmount, computed } from "vue";
 import api from "../api.js";
 export default {
   components: {},
-  data() {
-    return {
-      windowWidth: null,
-      items: [],
-    };
-  },
-  created() {
-    window.addEventListener("resize", () => {
-      this.windowWidth = window.innerWidth;
-    });
-    this.windowWidth = window.innerWidth;
-  },
-  mounted() {
-    this.$nextTick(function () {
-      // Code that will run only after the
-      // entire view has been rendered
+  setup() {
+    let windowWidth = ref(null);
+    let items = ref([]);
 
-      this.buildlist();
-    });
-  },
-  methods: {
-    buildlist() {
+    function buildlist() {
       api
         .getFileList()
         .then((res) => {
           if (res.status === 200) {
             console.log("Fetched File list:", res);
-            this.items = res.data; // list of filenames
+            items.value = res.data; // list of filenames
           }
         })
         .then(() => {
-          var temp = this.items;
-          this.items = temp.map((item) => {
+          var temp = items.value;
+          items.value = temp.map((item) => {
             return {
               ...item,
               url: api.getFileBaseUrl().slice(0, -1) + item.path,
             };
           });
-          // console.log(this.items)
         })
-        .then(() => console.log(this.items));
-    },
-    deleteFile(filename) {
+        .then(() => console.log(items.value));
+    }
+
+    function deleteFile(filename) {
       console.log("Deleting...", filename);
 
-      api.deleteFile(filename).then(
-        function (res) {
-          console.log("aye!", res.data);
-          if (res.data === "success") {
-            this.deleteFolderDialog = false;
-            this.$message.success("Deleted");
-            this.buildlist();
-          } else {
-            this.$message.erro("Delete Failed");
-          }
-        }.bind(this)
-      );
-    },
+      api.deleteFile(filename).then((res) => {
+        console.log("aye!", res.data);
+        if (res.data === "success") {
+          deleteFolderDialog = false;
+          // this.$message.success("Deleted");
+          buildlist();
+        } else {
+          // this.$message.erro("Delete Failed");
+        }
+      });
+    }
 
-    downloadFile(filepath, label = "") {
+    function downloadFile(filepath, label = "") {
       console.log("Downloading", filepath);
       api
         .downloadFile(filepath)
@@ -141,15 +124,28 @@ export default {
           URL.revokeObjectURL(link.href);
         })
         .catch(console.error);
-    },
-  },
-  computed: {
-    currentRouteName() {
-      return this.$route.name;
-    },
-    ismobile() {
-      return this.windowWidth < 950;
-    },
+    }
+
+    window.addEventListener("resize", () => {
+      windowWidth.value = window.innerWidth;
+    });
+    windowWidth.value = window.innerWidth;
+    const currentRouteName = computed(() => route.path);
+    const isMobile = computed(() => windowWidth < 950);
+
+    onMounted(() => {
+      buildlist();
+    });
+
+    return {
+      items,
+      windowWidth,
+      buildlist,
+      deleteFile,
+      downloadFile,
+      currentRouteName,
+      isMobile,
+    };
   },
 };
 </script>

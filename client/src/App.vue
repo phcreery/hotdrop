@@ -16,44 +16,32 @@
           <router-view />
         </div>
       </el-main>
-      <el-footer :style="{ textAlign: 'center' }">
-        Ant Design ©2018 Created by Ant UED
-      </el-footer>
+      <!-- <el-footer :style="{ textAlign: 'center' }">
+        Created by Peyton Creery
+      </el-footer> -->
     </el-container>
   </div>
 </template>
 
 <script>
-// import Gallery from './components/Gallery.vue'
 import Breadcrumb from "./components/Shared/Breadcrumb.vue";
 import Header from "./components/Shared/Header.vue";
 
 export default {
   name: "App",
   components: {
-    // Gallery,
     Breadcrumb,
     Header,
   },
-  mounted() {},
 };
 </script>
 
 <style>
 #app {
-  /* font-family: Avenir, Helvetica, Arial, sans-serif; */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  /* text-align: center; */
-  /* color: #2c3e50; */
-  /* margin-top: 60px; */
-  height: 100vh;
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
 }
-#components-layout-demo-fixed .logo {
-  width: 120px;
-  height: 31px;
-  background: rgba(255, 255, 255, 0.2);
-  margin: 16px 24px 16px 0;
-  float: left;
+body {
+  margin: 0;
 }
 </style>
