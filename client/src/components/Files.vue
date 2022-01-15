@@ -1,161 +1,178 @@
 <template>
   <div>
-    {{ items }}
     <div v-if="isMobile">
       <div :style="{ textAlign: 'center' }">
-        <!-- Files <br/> -->
-        <!-- <a-list
-          :grid="{ gutter: 16, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 3 }"
-          :data-source="items"
-        >
-          <a-list-item slot="renderItem" slot-scope="item">
-            <a-card :title="item.filename">
-              In: {{ item.dir }}<br />
-              Modified: {{ item.modifiedDateString }}<br />
-              <img slot="cover" :src="item.url" />
-              <template slot="actions" class="ant-card-actions">
-                <a-button
-                  type="primary"
-                  icon="download"
-                  @click="downloadFile(item.path, item.filename)"
-                />
-                <a-popconfirm
-                  title="Sure to delete?"
-                  @confirm="() => deleteFile(item.fullpath)"
-                >
-                  <a-button type="danger" icon="delete">
-                  </a-button>
-                </a-popconfirm>
-              </template>
-            </a-card>
-          </a-list-item>
-        </a-list> -->
+        <!-- {{this.items}} -->
+        <a-list :data-source="items">
+          <template #renderItem="{ item }">
+            <a-list-item>
+              <!-- {{ item.filename }}{{ item.modifiedDate }} {{ index }} -->
+              <a-card :title="truncate(item.filename, 20, '...')">
+                In: {{ item.dir }}<br />
+                Modified: {{ item.modifiedDateString }}<br />
+                <template #cover>
+                  <img :src="item.url" />
+                </template>
+                <template #actions class="ant-card-actions">
+                  <a-button
+                    type="primary"
+                    @click="downloadFile(item.path, item.filename)"
+                    ><template #icon><DownloadOutlined /></template
+                  ></a-button>
+                  <a-popconfirm
+                    title="Sure to delete?"
+                    @confirm="() => deleteFile(item.fullpath)"
+                  >
+                    <a-button danger>
+                      <template #icon><DeleteOutlined /></template>
+                    </a-button>
+                  </a-popconfirm>
+                </template>
+              </a-card>
+            </a-list-item>
+          </template>
+        </a-list>
       </div>
     </div>
     <div v-else>
-      <el-table :data="items" style="width: 100%">
-        <el-table-column prop="filename" label="Filename" width="450" />
-        <el-table-column
-          prop="modifiedDateString"
-          label="Date Modified"
-          width="180"
-        />
-        <el-table-column fixed="right" label="Actions" width="200">
-          <template #default="scope">
-            <el-button type="text" size="small">Star</el-button>
-            <el-button
-              type="text"
-              size="small"
-              @click="downloadFile(scope.row.path, scope.row.filename)"
-              >Download</el-button
+      <a-table :columns="columns" :data-source="items">
+        <template #action="{ record }">
+          <span>
+            <a-button
+              type="primary"
+              @click="downloadFile(record.path, record.filename)"
+              ><template #icon><DownloadOutlined /></template
+            ></a-button>
+            <a-divider type="vertical" />
+            <a-popconfirm
+              title="Sure to delete?"
+              @confirm="() => deleteFile(record.fullpath)"
             >
-
-            <el-popconfirm
-              title="Are you sure to delete this?"
-              @confirm="() => deleteFile(scope.row.fullpath)"
-            >
-              <template #reference>
-                <el-button type="text" size="small">Delete</el-button>
-              </template>
-            </el-popconfirm>
-          </template>
-        </el-table-column>
-      </el-table>
+              <a-button danger>
+                <template #icon><DeleteOutlined /></template>
+              </a-button>
+            </a-popconfirm>
+          </span>
+        </template>
+      </a-table>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, onMounted, onBeforeMount, onBeforeUnmount, computed } from "vue";
-import { ElMessage } from "element-plus";
+import { ref, onMounted, onBeforeMount, onBeforeUnmount, computed } from 'vue'
+import { DownloadOutlined, DeleteOutlined } from '@ant-design/icons-vue'
+import { message } from 'ant-design-vue'
 
-import api from "../api.js";
+import api from '../api.js'
 
 export default {
-  components: {},
+  components: { DownloadOutlined, DeleteOutlined },
   setup() {
-    let windowWidth = ref(null);
-    let items = ref([]);
+    let windowWidth = ref(null)
+    let items = ref([])
+    const columns = [
+      {
+        title: 'FileName',
+        dataIndex: 'path',
+        key: 'filename',
+      },
+      {
+        title: 'Modified',
+        dataIndex: 'modifiedDateString',
+        key: 'modifiedDateString',
+      },
+      {
+        title: 'Action',
+        key: 'action',
+        slots: { customRender: 'action' },
+      },
+    ]
 
     function buildlist() {
       api
         .getFileList()
         .then((res) => {
           if (res.status === 200) {
-            console.log("Fetched File list:", res);
-            items.value = res.data; // list of filenames
+            console.log('Fetched File list:', res)
+            items.value = res.data // list of filenames
           }
         })
         .then(() => {
-          var temp = items.value;
-          items.value = temp.map((item) => {
+          var temp = items.value
+          items.value = temp.map((item, index) => {
             return {
               ...item,
               url: api.getFileBaseUrl().slice(0, -1) + item.path,
-            };
-          });
+              key: index,
+            }
+          })
         })
-        .then(() => console.log(items.value));
+        .then(() => console.log(items.value))
     }
 
     function deleteFile(filename) {
-      console.log("Deleting...", filename);
+      console.log('Deleting...', filename)
 
       api.deleteFile(filename).then((res) => {
-        console.log("aye!", res);
+        console.log('aye!', res)
         if (res.status == 200) {
           // deleteFolderDialog = false;
-          ElMessage({
-            message: "Deleted",
-            type: "success",
-          });
-          buildlist();
+          message.success('Deleted Successfully.')
+          buildlist()
         } else {
-          ElMessage({
-            message: "Delete failed",
-            type: "error",
-          });
+          message.error('Delete Failed.')
         }
-      });
+      })
     }
 
-    function downloadFile(filepath, label = "") {
-      console.log("Downloading", filepath);
+    function downloadFile(filepath, label = '') {
+      console.log('Downloading', filepath)
       api
         .downloadFile(filepath)
         .then((response) => {
-          const blob = new Blob([response.data], { type: "application/pdf" });
-          const link = document.createElement("a");
-          link.href = URL.createObjectURL(blob);
-          link.download = label;
-          link.click();
-          URL.revokeObjectURL(link.href);
+          const blob = new Blob([response.data], { type: 'application/pdf' })
+          const link = document.createElement('a')
+          link.href = URL.createObjectURL(blob)
+          link.download = label
+          link.click()
+          URL.revokeObjectURL(link.href)
         })
-        .catch(console.error);
+        .catch(console.error)
+    }
+    function truncate(text, length, suffix) {
+      if (!text) return
+      if (text.length > length) {
+        return text.substring(0, length) + suffix
+      } else {
+        return text
+      }
     }
 
-    window.addEventListener("resize", () => {
-      windowWidth.value = window.innerWidth;
-    });
-    windowWidth.value = window.innerWidth;
-    const currentRouteName = computed(() => route.path);
-    const isMobile = computed(() => windowWidth < 950);
+    window.addEventListener('resize', () => {
+      windowWidth.value = window.innerWidth
+    })
+    windowWidth.value = window.innerWidth
+    const currentRouteName = computed(() => route.path)
+    const isMobile = computed(() => windowWidth.value < 950)
 
     onMounted(() => {
-      buildlist();
-    });
+      buildlist()
+    })
 
     return {
       items,
+      columns,
       windowWidth,
       buildlist,
       deleteFile,
       downloadFile,
+      truncate,
       currentRouteName,
       isMobile,
-    };
+    }
   },
-};
+}
 </script>
 
 <style scoped></style>

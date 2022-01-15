@@ -1,45 +1,56 @@
 <template>
   <div id="app">
-    <el-container id="components-layout-demo-fixed">
+    <a-layout id="components-layout-demo-fixed">
       <Header />
-      <el-main
+      <a-layout-content
         :style="{
           padding: '0 50px',
-          marginTop: '64px',
-          minHeight: 'calc(100vh - 64px - 64px - 5px)',
+          marginTop: 'calc(64px + 24px)',
+          minHeight: 'calc(100vh - 64px - 24px - 64px - 6px)',
         }"
       >
-        <Breadcrumb />
         <div
           :style="{ background: '#fff', padding: '24px', minHeight: '100%' }"
         >
           <router-view />
         </div>
-      </el-main>
-      <!-- <el-footer :style="{ textAlign: 'center' }">
-        Created by Peyton Creery
-      </el-footer> -->
-    </el-container>
+      </a-layout-content>
+      <a-layout-footer :style="{ textAlign: 'center' }">
+        App by Peyton Creery
+      </a-layout-footer>
+    </a-layout>
   </div>
 </template>
 
 <script>
-import Breadcrumb from "./components/Shared/Breadcrumb.vue";
-import Header from "./components/Shared/Header.vue";
+import Breadcrumb from './components/Shared/Breadcrumb.vue'
+import Header from './components/Shared/Header.vue'
 
 export default {
-  name: "App",
+  name: 'App',
   components: {
     Breadcrumb,
     Header,
   },
-};
+}
 </script>
 
 <style>
 #app {
-  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
-    "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  /* font-family: Avenir, Helvetica, Arial, sans-serif; */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* text-align: center; */
+  /* color: #2c3e50; */
+  /* margin-top: 60px; */
+  height: 100vh;
+}
+#components-layout-demo-fixed .logo {
+  width: 120px;
+  height: 31px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 16px 24px 16px 0;
+  float: left;
 }
 body {
   margin: 0;

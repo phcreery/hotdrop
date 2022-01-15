@@ -7,12 +7,12 @@
 <script>
 export default {
   data() {
-    return {};
+    return {}
   },
   computed: {
     currentRouteName() {
-      return this.$route.name;
+      return this.$route.name
     },
   },
-};
+}
 </script>

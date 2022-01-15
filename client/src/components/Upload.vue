@@ -1,95 +1,97 @@
 <template>
   <div :style="{ textAlign: 'center' }">
-    <el-upload
-      action=""
-      drag
-      multiple
-      :auto-upload="false"
-      :file-list="fileList.value"
-      :on-change="handleChange"
-      :on-remove="onRemove"
+    <a-upload-dragger
+      :file-list="fileList"
+      :before-upload="() => false"
+      :multiple="true"
+      @change="handleChange"
     >
-      <el-icon class="el-icon--upload"><upload-filled /></el-icon>
-      <div class="el-upload__text">
-        Drop file here or <em>click to upload</em>
-      </div>
-      <template #tip>
-        <div class="el-upload__tip">
-          jpg/png files with a size less than 500kb
-        </div>
-      </template>
-    </el-upload>
-    <el-button
+      <p class="ant-upload-drag-icon">
+        <!-- <a-icon type="inbox" /> -->
+        <InboxOutlined />
+      </p>
+      <p class="ant-upload-text">Click or drag file to this area to upload</p>
+      <p class="ant-upload-hint">
+        Support for a single or bulk upload. Strictly prohibit from uploading
+        company data or other band files
+      </p>
+    </a-upload-dragger>
+    <a-button
       type="primary"
       :disabled="fileList.length === 0"
       :loading="uploading"
       style="margin-top: 16px"
       @click="handleUpload"
     >
-      {{ uploading ? "Uploading" : "Start Upload" }}
-    </el-button>
+      {{ uploading ? 'Uploading' : 'Start Upload' }}
+    </a-button>
   </div>
 </template>
 
 <script>
-import { ref, onMounted, onBeforeMount, onBeforeUnmount, computed } from "vue";
-import { UploadFilled } from "@element-plus/icons-vue";
-import { ElMessage } from "element-plus";
+import { ref, onMounted, onBeforeMount, onBeforeUnmount, computed } from 'vue'
+import { InboxOutlined } from '@ant-design/icons-vue'
+import { message } from 'ant-design-vue'
 
-import api from "../api.js";
+import api from '../api.js'
 export default {
-  components: { UploadFilled },
+  components: { InboxOutlined },
   setup() {
-    const fileList = ref([]);
-    const uploadURL = ref("");
-    const uploading = ref(false);
+    const fileList = ref([])
+    const uploadURL = ref('')
+    const uploading = ref(false)
 
-    function handleChange(file, newFileList) {
-      // console.log("change", file, newFileList);
-      fileList.value = newFileList;
+    function handleChange(event) {
+      console.log('change', event, event.file, event.fileList)
+      fileList.value = event.fileList
+      // fileList.value = JSON.parse(JSON.stringify(newFileList));
     }
-    function onRemove(file, newFileList) {
-      // console.log("onRemove", file, newFileList);
-      fileList.value = newFileList;
+    // function onRemove(file, newFileList) {
+    //   // console.log("onRemove", file, newFileList);
+    //   fileList.value = newFileList;
+    // }
+    function handleRemove(file) {
+      const index = fileList.value.indexOf(file)
+      const newFileList = fileList.value.slice()
+      newFileList.splice(index, 1)
+      fileList.value = newFileList
+    }
+    function beforeUpload(file) {
+      fileList.value = [...fileList.value, file]
     }
     function handleUpload() {
-      // console.log("handle upload", fileList.value);
-      uploading.value = true;
-      const formData = new FormData();
+      console.log('handle upload', fileList.value)
+      uploading.value = true
+      const formData = new FormData()
       for (let file of fileList.value) {
-        formData.append("files", file.raw, file.name);
+        formData.append('files', file.originFileObj, file.name)
       }
       api.UploadFileForm(formData).then((res) => {
-        console.log(res);
+        console.log(res)
         if (res.status == 200) {
-          uploading.value = false;
-          ElMessage({
-            message: "Uploaded Successfully.",
-            type: "success",
-          });
-          fileList.value = [];
+          uploading.value = false
+          message.success('Uploaded Successfully.')
+          fileList.value = []
         } else {
-          uploading.value = false;
-          ElMessage({
-            message: "Upload Failed.",
-            type: "error",
-          });
+          uploading.value = false
+          message.error('Upload Failed.')
         }
-      });
+      })
     }
 
-    uploadURL.value = api.getUploadURL();
+    uploadURL.value = api.getUploadURL()
 
     return {
       fileList,
       uploadURL,
       uploading,
       handleChange,
+      beforeUpload,
       handleUpload,
-      onRemove,
-    };
+      handleRemove,
+    }
   },
-};
+}
 </script>
 
 <style scoped></style>

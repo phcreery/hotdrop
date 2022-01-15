@@ -1,5 +1,5 @@
 <template>
-  <el-header
+  <a-layout-header
     :style="{
       position: 'fixed',
       zIndex: 1,
@@ -7,64 +7,68 @@
       textAlign: 'center',
     }"
   >
-    <el-menu
+    <!-- <div class="logo" /> -->
+    <a-menu
+      theme="dark"
       mode="horizontal"
-      default-active="1"
+      :selectedKeys="[currentRouteName]"
       :style="{ lineHeight: '64px', marginRight: '0px' }"
     >
-      <el-menu-item id="Photos" index="1" @click="goto('Photos')">
-        <el-icon><Picture /></el-icon>
+      <a-menu-item id="Photos" index="1" @click="goto('Photos')">
+        <!-- <setting-outlined /> -->
+        <file-image-outlined />
         Pictures
-      </el-menu-item>
-      <el-menu-item id="Files" index="2" @click="goto('Files')">
-        <el-icon><folder-opened /></el-icon>
+      </a-menu-item>
+      <a-menu-item id="Files" index="2" @click="goto('Files')">
+        <!-- <setting-outlined /> -->
+        <container-outlined />
         Files
-      </el-menu-item>
-      <el-menu-item id="Upload" index="3" @click="goto('Upload')">
-        <el-icon><upload-filled /></el-icon>
+      </a-menu-item>
+      <a-menu-item id="Upload" index="3" @click="goto('Upload')">
+        <!-- <setting-outlined /> -->
+        <cloud-upload-outlined />
         Upload
-      </el-menu-item>
-      <el-menu-item id="Photos" index="4" @click="goto('Settings')">
-        <el-icon><Tools /></el-icon>
+      </a-menu-item>
+      <a-menu-item id="Photos" index="4" @click="goto('Settings')">
+        <setting-outlined />
+        <!-- <Icon type="setting-outlined" :style="{ marginRight: '0px' }" /> -->
         Settings
-      </el-menu-item>
-    </el-menu>
-  </el-header>
+      </a-menu-item>
+    </a-menu>
+  </a-layout-header>
 </template>
 
 <script>
+import { ref, onMounted, onBeforeMount, onBeforeUnmount, computed } from 'vue'
+import router from '../../router'
+import { useRoute } from 'vue-router'
+import { Button } from 'ant-design-vue'
 import {
-  Camera,
-  Picture,
-  Tools,
-  UploadFilled,
-  FolderOpened,
-} from "@element-plus/icons-vue";
-
-import { ref, onMounted, onBeforeMount, onBeforeUnmount, computed } from "vue";
-import router from "../../router";
-import { useRoute } from "vue-router";
+  SettingOutlined,
+  FileImageOutlined,
+  ContainerOutlined,
+  CloudUploadOutlined,
+} from '@ant-design/icons-vue'
 
 export default {
   components: {
-    Camera,
-    Picture,
-    Tools,
-    UploadFilled,
-    FolderOpened,
+    SettingOutlined,
+    FileImageOutlined,
+    ContainerOutlined,
+    CloudUploadOutlined,
   },
   setup() {
-    let route = useRoute();
+    let route = useRoute()
 
     function goto(dest) {
-      router.push(dest);
+      router.push(dest)
     }
 
-    const currentRouteName = computed(() => route.path);
+    const currentRouteName = computed(() => route.path)
 
-    return { goto, currentRouteName };
+    return { goto, currentRouteName }
   },
-};
+}
 </script>
 <style scoped>
 .el-header {
