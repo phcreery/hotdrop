@@ -1,8 +1,7 @@
 <template>
   <div>
     {{ items }}
-    <el-button>Default</el-button>
-    <div v-if="ismobile">
+    <div v-if="isMobile">
       <div :style="{ textAlign: 'center' }">
         <!-- Files <br/> -->
         <!-- <a-list
@@ -42,18 +41,18 @@
           width="180"
         />
         <el-table-column fixed="right" label="Actions" width="200">
-          <template #default>
+          <template #default="scope">
             <el-button type="text" size="small">Star</el-button>
             <el-button
               type="text"
               size="small"
-              @click="downloadFile(text.path, text.filename)"
+              @click="downloadFile(scope.row.path, scope.row.filename)"
               >Download</el-button
             >
 
             <el-popconfirm
               title="Are you sure to delete this?"
-              @confirm="() => deleteFile(text.fullpath)"
+              @confirm="() => deleteFile(scope.row.fullpath)"
             >
               <template #reference>
                 <el-button type="text" size="small">Delete</el-button>
@@ -68,7 +67,10 @@
 
 <script>
 import { ref, onMounted, onBeforeMount, onBeforeUnmount, computed } from "vue";
+import { ElMessage } from "element-plus";
+
 import api from "../api.js";
+
 export default {
   components: {},
   setup() {
@@ -100,13 +102,19 @@ export default {
       console.log("Deleting...", filename);
 
       api.deleteFile(filename).then((res) => {
-        console.log("aye!", res.data);
-        if (res.data === "success") {
-          deleteFolderDialog = false;
-          // this.$message.success("Deleted");
+        console.log("aye!", res);
+        if (res.status == 200) {
+          // deleteFolderDialog = false;
+          ElMessage({
+            message: "Deleted",
+            type: "success",
+          });
           buildlist();
         } else {
-          // this.$message.erro("Delete Failed");
+          ElMessage({
+            message: "Delete failed",
+            type: "error",
+          });
         }
       });
     }
