@@ -17,22 +17,22 @@
       <a-menu-item id="Photos" index="1" @click="goto('Photos')">
         <!-- <setting-outlined /> -->
         <file-image-outlined />
-        Pictures
+        <!-- Pictures -->
       </a-menu-item>
       <a-menu-item id="Files" index="2" @click="goto('Files')">
         <!-- <setting-outlined /> -->
         <container-outlined />
-        Files
+        <!-- Files -->
       </a-menu-item>
       <a-menu-item id="Upload" index="3" @click="goto('Upload')">
         <!-- <setting-outlined /> -->
         <cloud-upload-outlined />
-        Upload
+        <!-- Upload -->
       </a-menu-item>
       <a-menu-item id="Photos" index="4" @click="goto('Settings')">
         <setting-outlined />
         <!-- <Icon type="setting-outlined" :style="{ marginRight: '0px' }" /> -->
-        Settings
+        <!-- Settings -->
       </a-menu-item>
     </a-menu>
   </a-layout-header>
@@ -73,5 +73,8 @@ export default {
 <style scoped>
 .el-header {
   padding: 0;
+}
+.ant-menu {
+  justify-content: center;
 }
 </style>
