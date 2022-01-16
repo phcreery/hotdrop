@@ -3,6 +3,7 @@
 The PCB is designed to be soldered directly to the back of a Raspberry Pi Zero (w/2/2w) without any standoff (Surface Mount Style). It is designed in [EasyEDA](https://easyeda.com/)
 
 ![Screenshot](PCBdesignScreenshot.png)
+![LIT_9161.jpg](LIT_9168.jpg)
 
 ### BOM
 
